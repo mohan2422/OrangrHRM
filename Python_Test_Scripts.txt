@@ -1,0 +1,42 @@
+pip install selenium
+Chrome browser
+ChromeDriver (compatible with your Chrome version)
+
+Open the OrangeHRM login page.
+Enter valid credentials.
+Click login.
+Verify successful login by checking the presence of a dashboard element.
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+import time
+
+driver = webdriver.Chrome()
+
+try:
+    # Step 1: Navigate to login page
+    driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
+    driver.maximize_window()
+    time.sleep(3)  # wait for page to load
+
+    # Step 2: Enter username and password
+    driver.findElement(By.NAME, "username").send_keys("Admin")
+    driver.findElement(By.NAME, "password").send_keys("admin123")
+
+    # Step 3: Click Login button
+    driver.findElement(By.XPATH, "//button[@type='submit']").click()
+    time.sleep(5)  # wait for dashboard to load
+
+    # Step 4: Verify login by checking the Dashboard presence
+    if "dashboard" in driver.current_url.lower():
+        print("Login Test Passed!")
+    else:
+        print("Login Test Failed!")
+
+except Exception as e:
+    print(f" Test encountered an error: {e}")
+
+finally:
+    # Step 5: Close the browser
+    driver.quit()
